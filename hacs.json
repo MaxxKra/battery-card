@@ -1,0 +1,14 @@
+{
+  "name": "Battery Card",
+  "content_in_root": true,
+  "country": "DE",
+  "description": "A custom card for displaying battery levels in Home Assistant",
+  "domains": ["lovelace"],
+  "homeassistant": "0.110.0",
+  "iot_class": "cloud_polling",
+  "keywords": ["battery", "home assistant", "lovelace", "card"],
+  "manifest": "https://raw.githubusercontent.com/MaxxKra/battery-card/main/manifest.json",
+  "releases": true,
+  "render_readme": true,
+  "zip_release": false
+}
