@@ -5,6 +5,19 @@ The Battery Card is a custom Home Assistant card designed to display battery lev
 
 <img src="https://raw.githubusercontent.com/MaxxKra/README_images/master/Battery-Card/layout_right.jpg" alt="Example" width="300"/>
 
+### <p align="center">If you are interested in supporting me, my channel, or my creative work,<br>any support is greatly appreciated:
+</p>
+<p align="center">
+  <a href="https://www.buymeacoffee.com/bastler">
+    <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.paypal.me/kramlmaxx">
+    <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="PayPal Donate">
+  </a>
+</p>
+
+
 ## Features
 
 - Display battery levels with customizable images
@@ -13,6 +26,27 @@ The Battery Card is a custom Home Assistant card designed to display battery lev
 - Simple integration with Home Assistant
 
 ## Installation
+
+### Method 1
+
+Install the repository as a custom repository in HACS:
+
+1. Open HACS.
+2. Click on the three dots in the top right corner.
+3. Select "Custom repositories".
+4. In the opened window, enter the repository URL: `https://github.com/MaxxKra/battery-card.git`.
+5. Choose "Lovelace" for the category.
+6. Click "Add".
+
+After adding:
+
+1. Close the window and search for the repository in HACS.
+2. Select it and click "Install" at the bottom right.
+
+The repository and its resources will be automatically added.
+You may need to clear the browser cache and refresh the browser.
+
+### Method 2
 
 1. Download the `battery-card.js` file.
 2. Place the file in your `www` folder.
@@ -91,6 +125,9 @@ The card supports multiple layout configurations:
 | `top`      | Name at the top, status in the middle, image at the bottom     |
 | `line_left`| Image on the right, name and status on the left                |
 | `line_right`| Image on the left, name and status on the right               |
+
+
+<img src="https://raw.githubusercontent.com/MaxxKra/README_images/master/Battery-Card/layouts.jpg" alt="Example" width="800"/>
 
 ### Advanced Configuration
 
