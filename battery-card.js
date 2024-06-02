@@ -5,14 +5,14 @@ class BatteryCard extends HTMLElement {
             this.content = document.createElement('div');
             this.content.style.display = 'grid';
             this.content.style.gridTemplateColumns = 'repeat(3, 1fr)';
-            this.content.style.gridTemplateRows = 'auto auto auto'; // Höhe der Zeilen automatisch anpassen
+            this.content.style.gridTemplateRows = 'auto auto auto';
             this.content.style.padding = '8px';
-            this.content.style.alignItems = 'center'; // Vertikal zentrieren
-            this.content.style.justifyItems = 'center'; // Horizontal zentrieren
+            this.content.style.alignItems = 'center';
+            this.content.style.justifyItems = 'center';
 
             card.appendChild(this.content);
             this.appendChild(card);
-            this.card = card; // Referenz auf das Kartenelement speichern
+            this.card = card;
         }
 
         if (!this.config || !this.config.entity) {
@@ -32,28 +32,24 @@ class BatteryCard extends HTMLElement {
         const color = this.getBatteryColor(batteryLevel);
         const layout = this.getLayout(layoutCard, batteryLevel);
 
-        const nameStyle = `
-            ${this.convertStyleConfig(this.config.styles?.name || [])}
-            word-break: break-word;
-            text-align: ${layout.nameJustify};  // Align text within the div
-        `;
+        const nameStyle = this.convertStyleConfig(this.config.styles?.name || []);
         const stateStyle = this.convertStyleConfig(this.config.styles?.state || []);
         const cardStyle = this.convertStyleConfig(this.config.styles?.card || []);
         const imageStyle = this.convertStyleConfig(this.config.styles?.image || []);
 
         this.card.style.cssText = cardStyle;
-        this.card.style.height = '100%'; // Kartenhöhe auf 100% setzen
-        this.card.style.display = 'flex'; // Flexbox-Layout für das Kartenelement
-        this.card.style.alignItems = 'center'; // Vertikal zentrieren
-        this.card.style.justifyContent = 'center'; // Horizontal zentrieren
+        this.card.style.height = '100%';
+        this.card.style.display = 'flex';
+        this.card.style.alignItems = 'center';
+        this.card.style.justifyContent = 'center';
 
-        // Setzen der rowGap und columnGap
         const rowGap = this.config.rowGap || '0';
         const columnGap = this.config.columnGap || '0';
         this.content.style.rowGap = rowGap;
         this.content.style.columnGap = columnGap;
 
         const image = this.getBatteryImage(batteryLevel, imageStyle);
+
         this.content.innerHTML = `
             <div style="grid-area: ${layout.nameArea}; align-self: ${layout.nameAlign}; justify-self: ${layout.nameJustify}; margin: ${layout.nameMargin};">
                 <h2 style="${nameStyle}">${batteryName}</h2>
@@ -112,9 +108,9 @@ class BatteryCard extends HTMLElement {
             return `<div style="color: red;">Image not available</div>`;
         }
 
-        const defaultWidthPercentage = 33; // 33% der Kartenbreite als Standard
+        const defaultWidthPercentage = 33;
         const cardWidth = this.card.clientWidth;
-        const defaultImageWidth = Math.min((cardWidth * defaultWidthPercentage) / 100, 100); // Maximal 100px
+        const defaultImageWidth = Math.min((cardWidth * defaultWidthPercentage) / 100, 100);
 
         let specifiedWidthPercentage = 100;
         const sizeStyle = this.config.styles?.image?.find(style => style.size);
@@ -123,7 +119,7 @@ class BatteryCard extends HTMLElement {
         }
 
         const imageWidth = (defaultImageWidth * specifiedWidthPercentage) / 100;
-        const defaultStyle = `width: ${imageWidth}px; height: auto; object-fit: contain; margin: 0 auto;`; // Bild zentriert
+        const defaultStyle = `width: ${imageWidth}px; height: auto; object-fit: contain; margin: 0 auto;`;
         let styleString = `${defaultStyle} ${imageStyle}`;
 
         return `<img src="${image}" alt="Battery level: ${level}%" style="${styleString}">`;
@@ -152,90 +148,89 @@ class BatteryCard extends HTMLElement {
         const image = this.getBatteryImage(batteryLevel, imageStyle);
 
         let layout = {
-            nameArea: '1 / 1 / 2 / 4', // Standard: oben (O1 + O2 + O3)
-            imageArea: '2 / 2 / 3 / 3', // Standard: mitte (M2)
-            statusArea: '3 / 1 / 4 / 4', // Standard: unten (U1 + U2 + U3)
-            nameAlign: 'center', // horizontal mitte (O1 + O2 + O3)
-            imageAlign: 'center', // horizontal mitte (M2)
-            statusAlign: 'center', // horizontal mitte (U1 + U2 + U3)
-            nameJustify: 'center', // vertikal mitte (O1 + O2 + O3)
-            imageJustify: 'center', // vertikal mitte (M2)
-            statusJustify: 'center', // vertikal mitte (U1 + U2 + U3)
-            nameMargin: '0 0 0 0', // Standard: keine Margen
-            statusMargin: '-10px 0 0 0' // Standard: keine Margen
+            nameArea: '1 / 1 / 2 / 4',
+            imageArea: '2 / 2 / 3 / 3',
+            statusArea: '3 / 1 / 4 / 4',
+            nameAlign: 'center',
+            imageAlign: 'center',
+            statusAlign: 'center',
+            nameJustify: 'center',
+            imageJustify: 'center',
+            statusJustify: 'center',
+            nameMargin: '0 0 0 0',
+            statusMargin: '-10px 0 0 0'
         };
 
-        // Anpassung der Grid-Bereiche basierend auf den Konfigurationen
         if (layoutCard === 'left') {
-            layout.imageArea = '2 / 2 / 4 / 3'; // Bild mitte (M2 + U2)
-            layout.statusArea = '2 / 1 / 4 / 2'; // Status links (M1 + U1)
-            layout.nameArea = '1 / 1 / 2 / 4'; // Name oben (O1 + O2 + O3)
-            layout.imageAlign = 'center'; // horizontal mitte (M2 + U2)
-            layout.statusAlign = 'center'; // horizontal mitte (M1 + U1)
-            layout.nameAlign = 'end'; // horizontal unten (O1 + O2 + O3)
-            layout.imageJustify = 'center'; // vertikal mitte (M2 + U2)
-            layout.statusJustify = 'end'; // vertikal rechts (M1 + U1)
-            layout.nameJustify = 'center'; // vertikal mitte (O1 + O2 + O3)
+            layout.imageArea = '2 / 2 / 4 / 3';
+            layout.statusArea = '2 / 1 / 4 / 2';
+            layout.nameArea = '1 / 1 / 2 / 4';
+            layout.imageAlign = 'center';
+            layout.statusAlign = 'center';
+            layout.nameAlign = 'end';
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'end';
+            layout.nameJustify = 'center';
             layout.nameMargin = '0 0 0 0';
             layout.statusMargin = '0 10px 0 0';
         } else if (layoutCard === 'right') {
-            layout.imageArea = '2 / 2 / 4 / 3'; // Bild mitte (M2 + U2)
-            layout.statusArea = '2 / 3 / 4 / 4'; // Status rechts (M3 + U3)
-            layout.nameArea = '1 / 1 / 2 / 4'; // Name oben (O1 + O2 + O3)
-            layout.imageAlign = 'center'; // horizontal mitte (M2 + U2)
-            layout.statusAlign = 'center'; // horizontal mitte (M3 + U3)
-            layout.nameAlign = 'end'; // horizontal unten (O1 + O2 + O3)
-            layout.imageJustify = 'center'; // vertikal mitte (M2 + U2)
-            layout.statusJustify = 'start'; // vertikal links (M3 + U3)
-            layout.nameJustify = 'center'; // vertikal mitte (O1 + O2 + O3)
+            layout.imageArea = '2 / 2 / 4 / 3';
+            layout.statusArea = '2 / 3 / 4 / 4';
+            layout.nameArea = '1 / 1 / 2 / 4';
+            layout.imageAlign = 'center';
+            layout.statusAlign = 'center';
+            layout.nameAlign = 'end';
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'start';
+            layout.nameJustify = 'center';
             layout.nameMargin = '0 0 0 0';
             layout.statusMargin = '0 0 0 10px';
         } else if (layoutCard === 'bottom') {
-            layout.imageArea = '1 / 2 / 2 / 3'; // Bild oben (O2)
-            layout.statusArea = '3 / 1 / 4 / 4'; // Status unten (U1 + U2 + U3)
-            layout.nameArea = '2 / 1 / 3 / 4'; // Name mitte (M1 + M2 + M3)
-            layout.imageAlign = 'end'; // horizontal unten (O2)
-            layout.statusAlign = 'start'; // horizontal oben (U1 + U2 + U3)
-            layout.nameAlign = 'center'; // horizontal mitte (M1 + M2 + M3)
-            layout.imageJustify = 'center'; // vertikal mitte (O2)
-            layout.statusJustify = 'center'; // vertikal mitte (U1 + U2 + U3)
-            layout.nameJustify = 'center'; // vertikal mitte (M1 + M2 + M3)
+            layout.imageArea = '1 / 2 / 2 / 3';
+            layout.statusArea = '3 / 1 / 4 / 4';
+            layout.nameArea = '2 / 1 / 3 / 4';
+            layout.imageAlign = 'end';
+            layout.statusAlign = 'start';
+            layout.nameAlign = 'center';
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'center';
+            layout.nameJustify = 'center';
             layout.nameMargin = '-10px 0 0 0';
             layout.statusMargin = '-30px 0 0 0';
         } else if (layoutCard === 'top') {
-            layout.imageArea = '3 / 2 / 4 / 3'; // Bild unten (U2)
-            layout.statusArea = '2 / 1 / 3 / 4'; // Status mitte (M1 + M2 + M3)
-            layout.nameArea = '1 / 1 / 2 / 4'; // Name oben (O1 + O2 + O3)
-            layout.imageAlign = 'center'; // horizontal mitte (U2)
-            layout.statusAlign = 'center'; // horizontal mitte (M1 + M2 + M3)
-            layout.nameAlign = 'center'; // horizontal mitte (O1 + O2 + O3)
-            layout.imageJustify = 'center'; // vertikal mitte (U2)
-            layout.statusJustify = 'center'; // vertikal mitte (M1 + M2 + M3)
-            layout.nameJustify = 'center'; // vertikal mitte (O1 + O2 + O3)
+            layout.imageArea = '3 / 2 / 4 / 3';
+            layout.statusArea = '2 / 1 / 3 / 4';
+            layout.nameArea = '1 / 1 / 2 / 4';
+            layout.imageAlign = 'center';
+            layout.statusAlign = 'center';
+            layout.nameAlign = 'center';
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'center';
+            layout.nameJustify = 'center';
             layout.nameMargin = '0 0 -30px 0';
             layout.statusMargin = '0 0 -20px 0';
         } else if (layoutCard === 'line_left') {
-            layout.imageArea = '1 / 3 / 4 / 4'; // Bild rechts (M3)
-            layout.statusArea = '2/ 1 / 4 / 3'; // Status links (M1 + M2)
-            layout.nameArea = '1 / 1 / 3 / 3'; // Name oben (O1 + O2)
+            layout.imageArea = '1 / 3 / 4 / 4';
+            layout.statusArea = '2 / 1 / 4 / 3';
+            layout.nameArea = '1 / 1 / 3 / 3';
             layout.imageAlign = 'center';
             layout.statusAlign = 'start';
             layout.nameAlign = 'center';
-            layout.imageJustify = 'center'; // vertikal mitte (M3)
-            layout.statusJustify = 'end'; // vertikal rechts (M1 + M2)
-            layout.nameJustify = 'end'; // vertikal mitte (O1 + O2)
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'end';
+            layout.nameJustify = 'end';
             layout.nameMargin = '0 10px 0 0';
             layout.statusMargin = '0 10px 0 0';
         } else if (layoutCard === 'line_right') {
-            layout.imageArea = '1 / 1 / 4 / 2'; // Bild links (M1)
-            layout.statusArea = '2 / 2 / 4 / 4'; // Status rechts (M2 + M3)
-            layout.nameArea = '1 / 2 / 3 / 4'; // Name oben (O2 + O3)
+            layout.imageArea = '1 / 1 / 4 / 2';
+            layout.statusArea = '2 / 2 / 4 / 4';
+            layout.nameArea = '1 / 2 / 3 / 4';
             layout.imageAlign = 'center';
             layout.statusAlign = 'start';
             layout.nameAlign = 'center';
-            layout.imageJustify = 'center'; // vertikal mitte (M1)
-            layout.statusJustify = 'start'; // vertikal links (M2 + M3)
-            layout.nameJustify = 'start'; // vertikal mitte (O2 + O3)
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'start';
+            layout.nameJustify = 'start';
             layout.nameMargin = '0 0 0 10px';
             layout.statusMargin = '0 0 0 10px';
         }
@@ -362,7 +357,6 @@ class BatteryCardEditor extends HTMLElement {
 
 customElements.define('battery-card-editor', BatteryCardEditor);
 
-// Register the card and the editor
 window.customCards = window.customCards || [];
 window.customCards.push({
     type: 'battery-card',
