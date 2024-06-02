@@ -32,11 +32,7 @@ class BatteryCard extends HTMLElement {
         const color = this.getBatteryColor(batteryLevel);
         const layout = this.getLayout(layoutCard, batteryLevel);
 
-        const nameStyle = `
-            ${this.convertStyleConfig(this.config.styles?.name || [])}
-            word-break: break-word;
-            text-align: ${layout.nameJustify};  // Align text within the div
-        `;
+        const nameStyle = this.convertStyleConfig(this.config.styles?.name || []);
         const stateStyle = this.convertStyleConfig(this.config.styles?.state || []);
         const cardStyle = this.convertStyleConfig(this.config.styles?.card || []);
         const imageStyle = this.convertStyleConfig(this.config.styles?.image || []);
