@@ -93,6 +93,8 @@ The `styles` object can have the following properties:
 
 #### Example
 
+<img src="https://raw.githubusercontent.com/MaxxKra/README_images/master/Battery-Card/example2.jpg" alt="Example" width="300"/>
+
 ```yaml
 type: 'custom:battery-card'
 entity: sensor.battery_sensor
@@ -109,7 +111,7 @@ styles:
   card:
     - background-color: '#f0f0f0'
   image:
-    - width: '50%'
+    - size: '50%'
 ```
 
 ### Layouts
