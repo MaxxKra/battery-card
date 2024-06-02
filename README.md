@@ -1,6 +1,9 @@
-# battery-card
+# BATTERY - CARD
 
 The Battery Card is a custom Home Assistant card designed to display battery levels with various layouts and styles. It offers flexible configuration options, including different layouts, styles, and image customization based on battery levels.
+
+
+<img src="https://raw.githubusercontent.com/MaxxKra/README_images/master/Battery-Card/layout_right.jpg" alt="Example" width="100"/>
 
 ## Features
 
