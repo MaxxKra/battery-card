@@ -135,6 +135,8 @@ For advanced users, the card can be further customized using CSS styles for indi
 
 #### Example
 
+<img src="https://raw.githubusercontent.com/MaxxKra/README_images/master/Battery-Card/example.jpg" alt="Example" width="300"/>
+
 ```yaml
 type: 'custom:battery-card'
 entity: sensor.battery_sensor
@@ -153,7 +155,7 @@ styles:
     - background: '#ffffff'
     - border-radius: '10px'
   image:
-    - width: '80%'
+    - size: '80%'
     - margin: '0 auto'
 ```
 
