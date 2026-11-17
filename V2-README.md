@@ -8,7 +8,7 @@
 - Pro Gerät ein Batteriestandsensor und ein optionaler Ladezustandssensor
 - Ladestatus automatisch (on/off, charging/discharging, 1/0) oder via konfigurierbarem Wert für „lädt“
 - Liste oder Raster mit 1–4 Spalten
-- Balken, MDI-Symbol oder kombinierte Batterieanzeige
+- Unveränderte originale Batterie-PNG-Grafiken (Standard), optional Balken, MDI-Symbol oder kombinierte Anzeige
 - Frei wählbare Positionen für Gerätename, Bild, Prozentwert und Ladestatus in einem 3×3-Raster
 - Einzelne Elemente ein-/ausblenden und Farbgrenzen einstellen
 
@@ -18,7 +18,7 @@
     view: grid
     columns: 2
     layout: custom
-    battery_style: both
+    battery_style: original
     entities:
       - entity: sensor.iphone_battery_level
         name: iPhone
@@ -51,14 +51,14 @@ Die Entwicklungsversion ist noch nicht als HACS-Update freigegeben.
 
 ## Kompatibilität
 
-Die bisherigen Schlüsselfelder entity, name und layout sind lesbar. Die bisherigen Base64-PNG-Batteriebilder wurden für diese Vorschau allerdings durch schlanke CSS-Balken / MDI-Icons ersetzt. Daher können sich Aussehen und Bild-Styling von älteren Karten ändern. styles.image betrifft nun nur den Container.
+Die bisherigen Schlüsselfelder entity, name und layout sind weiterhin lesbar. **Alle sieben originalen Base64-PNG-Batteriegrafiken wurden unverändert übernommen und sind die Standardanzeige** (battery_style: original). Die originalen Schwellen für die Bildauswahl bleiben ebenfalls erhalten. Die Grafikbreite lässt sich optional mit image_size (Pixel) festlegen. Bisherige styles.image-Objekte werden weiterhin ausgewertet; der alte size-Prozentwert bleibt als Skalierungsfaktor erhalten. Da die Layout-Engine neu ist, können Abstände und Positionen gegenüber der bisherigen Karte abweichen. CSS-Balken und MDI-Icons sind nur optionale Alternativen.
 
 ## Noch zu prüfen
 
 - Echte Home-Assistant-Editorvorschau und Picker-Verhalten
 - Mobile, Tablet, Desktop, helle und dunkle Themes
 - Ladezustände unterschiedlicher Integrationen
-- Optionaler Legacy-Bildstil
+- Darstellung der Originalgrafiken in Home Assistant auf verschiedenen Displaygrößen überprüfen
 - Endgültige HACS-Dateiumstellung und Upgrade-Pfad
 
-Die JavaScript-Syntax und Basisfälle mit mehreren Geräten, Ladezuständen, Legacy-Konfiguration und fehlenden Entitäten wurden in einem Mock-Test geprüft. Ein vollständiger Test im echten Home Assistant fehlt noch.
+Die JavaScript-Syntax sowie Basisfälle mit mehreren Geräten, Ladezuständen, Legacy-Konfiguration und fehlenden Entitäten wurden in einem Mock-Test geprüft. Zusätzlich wurden alle sieben Grafikdaten bytegenau mit den Originalen verglichen und die bisherigen Schwellenwerte getestet. Ein vollständiger Test im echten Home Assistant fehlt noch.
