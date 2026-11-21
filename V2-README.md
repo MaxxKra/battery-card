@@ -62,3 +62,17 @@ Die bisherigen Schlüsselfelder entity, name und layout sind weiterhin lesbar. *
 - Endgültige HACS-Dateiumstellung und Upgrade-Pfad
 
 Die JavaScript-Syntax sowie Basisfälle mit mehreren Geräten, Ladezuständen, Legacy-Konfiguration und fehlenden Entitäten wurden in einem Mock-Test geprüft. Zusätzlich wurden alle sieben Grafikdaten bytegenau mit den Originalen verglichen und die bisherigen Schwellenwerte getestet. Ein vollständiger Test im echten Home Assistant fehlt noch.
+
+## Originale Layouts und Styles (Kompatibilitätskorrektur)
+
+Die sieben Standardlayouts default, left, right, top, bottom, line_left und line_right verwenden wieder die originalen Grid-Flächen, Ausrichtungen und Ränder. Bei right steht der Prozentwert rechts vom Bild; bei left links. Der Gerätename überspannt bei diesen beiden Layouts die gesamte obere Zeile.
+
+styles.card, styles.name, styles.state und styles.image werden weiter ausgewertet. Bildstyles wirken direkt auf das img-Element. Ohne explizites image_size gilt wieder die originale Berechnung: min(Kartenbreite × 33 %, 100 px), anschließend skaliert mit styles.image.size. Beispielsweise bedeutet size: 60% weiterhin 60 % dieser automatisch berechneten Bildbreite. Größen unter 24 px werden nicht mehr künstlich vergrößert. Die Bildbreite wird auch bei Größenänderungen aktualisiert.
+
+Die ursprünglichen rowGap- und columnGap-Vorgaben bleiben bei Standardlayouts erhalten (Standard 0). H2- und P-Elemente und ihre originalen Abstände sind wiederhergestellt. Ohne explizite neue Farbgrenzen gelten die ursprünglichen Batteriefarben. Nicht verfügbare Sensorwerte werden weiterhin als „—“ kenntlich gemacht.
+
+Die freie Positionierung bleibt als zusätzliches Layout custom verfügbar. Die Wahl eines Standardlayouts verwendet die Originalregeln auch dann, wenn zuvor freie Positionen gespeichert wurden. Ein optionaler Pixelwert image_size ist eine bewusste neue Übersteuerung; ein leeres Feld verwendet die Originalberechnung. Der Editor erhält bestehende styles beim Bearbeiten.
+
+Die innere Gerätefläche bleibt transparent und kann über --battery-card-device-background angepasst werden. Der Kartenhintergrund übernimmt weiterhin das Theme bzw. styles.card.
+
+Validiert: Vergleich aller sieben Layoutregeln und der Originalfarben mit dem ursprünglichen Code; Prozentgrößen über fünf Breiten; Styles und PNG-Grafiken. Anschließend Prüfung der echten Home-Assistant-Karten und der schmalen Handy-Karten.
