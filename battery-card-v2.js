@@ -191,7 +191,7 @@
         '.battery-list{display:grid;grid-template-columns:repeat(' + (view === "grid" ? count : 1) +
         ',minmax(0,1fr));gap:' + columnGap + ';padding:12px}' +
         '.battery-device{min-width:0;min-height:82px;border-radius:var(--bc-radius);' +
-        'background:var(--secondary-background-color,rgba(128,128,128,.07));padding:12px;box-sizing:border-box}' +
+        'background:var(--battery-card-device-background,transparent);padding:12px;box-sizing:border-box}' +
         '.slots{display:grid;grid-template-areas:"top-left top-center top-right" ' +
         '"middle-left middle-center middle-right" "bottom-left bottom-center bottom-right";' +
         'grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-rows:auto auto auto;' +
