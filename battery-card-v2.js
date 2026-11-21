@@ -17,8 +17,8 @@
   const PRESETS = {
     default: DEFAULT_POSITIONS,
     bottom: { name: "middle-center", image: "top-center", level: "bottom-center", status: "bottom-center" },
-    left: { name: "top-center", image: "middle-left", level: "middle-right", status: "bottom-center" },
-    right: { name: "top-center", image: "middle-right", level: "middle-left", status: "bottom-center" },
+    left: { name: "top-center", image: "middle-center", level: "middle-left", status: "bottom-center" },
+    right: { name: "top-center", image: "middle-center", level: "middle-right", status: "bottom-center" },
     top: { name: "top-center", image: "bottom-center", level: "middle-center", status: "middle-center" },
     line_left: { name: "middle-left", image: "middle-right", level: "bottom-left", status: "bottom-left" },
     line_right: { name: "middle-right", image: "middle-left", level: "bottom-right", status: "bottom-right" }
@@ -90,14 +90,137 @@
     return ORIGINAL_BATTERY_IMAGES.ladung5;
   }
 
-  function iconOf(level, charging, cfg) {
+  function originalColor(level) {
+        if (level > 80) {
+            return '#229c0d';
+        } else if (level > 65) {
+            return '#6c9d0d';
+        } else if (level > 50) {
+            return '#89a10d';
+        } else if (level > 35) {
+            return '#9d880c';
+        } else if (level > 20) {
+            return '#a4600e';
+        } else if (level > 5) {
+            return '#ab2e00';
+        } else {
+            return '#ab0c00';
+        }
+    }
+
+
+  function originalLayout(layoutCard) {
+
+        let layout = {
+            nameArea: '1 / 1 / 2 / 4',
+            imageArea: '2 / 2 / 3 / 3',
+            statusArea: '3 / 1 / 4 / 4',
+            nameAlign: 'center',
+            imageAlign: 'center',
+            statusAlign: 'center',
+            nameJustify: 'center',
+            imageJustify: 'center',
+            statusJustify: 'center',
+            nameMargin: '0 0 0 0',
+            statusMargin: '-10px 0 0 0'
+        };
+
+        if (layoutCard === 'left') {
+            layout.imageArea = '2 / 2 / 4 / 3';
+            layout.statusArea = '2 / 1 / 4 / 2';
+            layout.nameArea = '1 / 1 / 2 / 4';
+            layout.imageAlign = 'center';
+            layout.statusAlign = 'center';
+            layout.nameAlign = 'end';
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'end';
+            layout.nameJustify = 'center';
+            layout.nameMargin = '0 0 0 0';
+            layout.statusMargin = '0 10px 0 0';
+        } else if (layoutCard === 'right') {
+            layout.imageArea = '2 / 2 / 4 / 3';
+            layout.statusArea = '2 / 3 / 4 / 4';
+            layout.nameArea = '1 / 1 / 2 / 4';
+            layout.imageAlign = 'center';
+            layout.statusAlign = 'center';
+            layout.nameAlign = 'end';
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'start';
+            layout.nameJustify = 'center';
+            layout.nameMargin = '0 0 0 0';
+            layout.statusMargin = '0 0 0 10px';
+        } else if (layoutCard === 'bottom') {
+            layout.imageArea = '1 / 2 / 2 / 3';
+            layout.statusArea = '3 / 1 / 4 / 4';
+            layout.nameArea = '2 / 1 / 3 / 4';
+            layout.imageAlign = 'end';
+            layout.statusAlign = 'start';
+            layout.nameAlign = 'center';
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'center';
+            layout.nameJustify = 'center';
+            layout.nameMargin = '-10px 0 0 0';
+            layout.statusMargin = '-30px 0 0 0';
+        } else if (layoutCard === 'top') {
+            layout.imageArea = '3 / 2 / 4 / 3';
+            layout.statusArea = '2 / 1 / 3 / 4';
+            layout.nameArea = '1 / 1 / 2 / 4';
+            layout.imageAlign = 'center';
+            layout.statusAlign = 'center';
+            layout.nameAlign = 'center';
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'center';
+            layout.nameJustify = 'center';
+            layout.nameMargin = '0 0 -30px 0';
+            layout.statusMargin = '0 0 -20px 0';
+        } else if (layoutCard === 'line_left') {
+            layout.imageArea = '1 / 3 / 4 / 4';
+            layout.statusArea = '2 / 1 / 4 / 3';
+            layout.nameArea = '1 / 1 / 3 / 3';
+            layout.imageAlign = 'center';
+            layout.statusAlign = 'start';
+            layout.nameAlign = 'center';
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'end';
+            layout.nameJustify = 'end';
+            layout.nameMargin = '0 10px 0 0';
+            layout.statusMargin = '0 10px 0 0';
+        } else if (layoutCard === 'line_right') {
+            layout.imageArea = '1 / 1 / 4 / 2';
+            layout.statusArea = '2 / 2 / 4 / 4';
+            layout.nameArea = '1 / 2 / 3 / 4';
+            layout.imageAlign = 'center';
+            layout.statusAlign = 'start';
+            layout.nameAlign = 'center';
+            layout.imageJustify = 'center';
+            layout.statusJustify = 'start';
+            layout.nameJustify = 'start';
+            layout.nameMargin = '0 0 0 10px';
+            layout.statusMargin = '0 0 0 10px';
+        }
+
+        return layout;
+    }
+
+
+  function imageWidthFor(cfg, cardWidth, custom = false) {
+    const size = Array.isArray(cfg.styles?.image) ? cfg.styles.image.find((item) => item && item.size) : null;
+    const factor = size ? (parseFloat(size.size) || 100) / 100 : 1;
+    const explicit = Number(cfg.image_size);
+    const base = Number.isFinite(explicit) && explicit > 0 ? explicit :
+      custom ? 85 : Math.min(cardWidth * 33 / 100, 100);
+    return base * factor;
+  }
+
+  function iconOf(level, charging, cfg, imageWidth, imageStyle) {
     const color = colorOf(level, cfg);
     const percent = level === null ? 0 : level;
     const mode = cfg.battery_style || "original";
     if (mode === "original") {
       const imageSource = originalBatteryImage(level);
       return imageSource ? '<img class="original-battery-img" src="' + imageSource.trim() +
-        '" alt="Batteriestand ' + percent + '%">' :
+        '" alt="Batteriestand ' + percent + '%" style="width:var(--bc-image-width);height:auto;object-fit:contain;margin:0 auto;' +
+        html(imageStyle || "") + '" data-image-width="' + imageWidth + '">' :
         '<ha-icon class="battery-icon" icon="mdi:battery-unknown"></ha-icon>';
     }
     const rounded = Math.min(100, Math.max(10, Math.round(percent / 10) * 10));
@@ -118,6 +241,34 @@
       super();
       this.attachShadow({ mode: "open" });
     }
+    connectedCallback() {
+      if (!this._resizeObserver && typeof ResizeObserver !== "undefined") {
+        this._resizeObserver = new ResizeObserver((entries) => {
+          const width = entries[0]?.contentRect.width;
+          if (width !== this._lastWidth) {
+            this._lastWidth = width;
+            this._sizeImages();
+          }
+        });
+        this._resizeObserver.observe(this);
+      }
+      this._sizeImages();
+    }
+    disconnectedCallback() {
+      this._resizeObserver?.disconnect();
+      this._resizeObserver = null;
+    }
+    _sizeImages() {
+      if (!this._config) return;
+      const custom = this._config.layout === "custom";
+      const images = this.shadowRoot.querySelectorAll(".original-battery-img");
+      const cardWidth = this.shadowRoot.querySelector("ha-card")?.clientWidth || this.clientWidth;
+      const multiple = entriesOf(this._config).length > 1;
+      images.forEach((img) => {
+        const width = multiple ? img.closest(".battery-device").clientWidth : cardWidth;
+        img.style.setProperty("--bc-image-width", imageWidthFor(this._config, width, custom) + "px");
+      });
+    }
     static getConfigElement() { return document.createElement("battery-card-editor"); }
     static getStubConfig(hass) {
       const ids = Object.keys((hass && hass.states) || {});
@@ -137,10 +288,11 @@
       this._hass = hass;
       this._render();
     }
-    getCardSize() { return Math.max(1, entriesOf(this._config || {}).length * 2); }
+    getCardSize() { return Math.max(1, entriesOf(this._config || {}).length); }
     _render() {
       if (!this._hass || !this._config) return;
       const cfg = this._config;
+      const custom = cfg.layout === "custom";
       const items = entriesOf(cfg);
       const preset = PRESETS[cfg.layout] || DEFAULT_POSITIONS;
       const placement = { ...preset, ...(cfg.positions || {}) };
@@ -150,13 +302,9 @@
       const nameStyle = styleOf(cfg.styles && cfg.styles.name);
       const valueStyle = styleOf(cfg.styles && cfg.styles.state);
       const imageStyle = styleOf(cfg.styles && cfg.styles.image);
-      const legacyImageStyles = cfg.styles && cfg.styles.image;
-      const legacySize = Array.isArray(legacyImageStyles) ?
-        legacyImageStyles.find((item) => item && typeof item === "object" && item.size) : null;
-      const sizeFactor = legacySize ? (parseFloat(legacySize.size) || 100) / 100 : 1;
-      const imageSize = clamp((cfg.image_size || 85) * sizeFactor, 24, 260);
-      const gap = html(cfg.rowGap || "12px");
-      const columnGap = html(cfg.columnGap || gap);
+      const imageSize = imageWidthFor(cfg, this.clientWidth, custom);
+      const gap = html(cfg.rowGap || (custom ? "12px" : "0"));
+      const columnGap = html(cfg.columnGap || (custom ? gap : "0"));
       const rendered = items.map((item) => {
         if (!item.entity) return '<div class="missing">Bitte Batteriesensor auswählen</div>';
         const entity = stateOf(this._hass, item.entity);
@@ -165,9 +313,27 @@
         const name = item.name || (entity && entity.attributes.friendly_name) || item.entity;
         const chargeStatus = charging === true ? "Lädt" :
           charging === false ? "Lädt nicht" : "Ladestatus unbekannt";
+        const image = iconOf(level, charging, cfg, imageSize, imageStyle);
+        const issue = !entity ? '<div class="missing">Nicht verfügbar: ' + html(item.entity) + '</div>' : "";
+        if (!custom) {
+          const layout = originalLayout(cfg.layout || "default");
+          const fieldStyle = (field) => html("grid-area:" + layout[field + "Area"] +
+            ";align-self:" + layout[field + "Align"] + ";justify-self:" + layout[field + "Justify"] +
+            ";margin:" + (layout[field + "Margin"] || "0"));
+          const color = cfg.low_threshold != null || cfg.warn_threshold != null ? colorOf(level, cfg) :
+            level === null ? colorOf(null, cfg) : originalColor(level);
+          return '<div class="battery-device original-layout">' +
+            (cfg.show_name === false ? "" : '<div style="' + fieldStyle("name") + '"><h2 class="original-name" style="' +
+              html(nameStyle) + '">' + html(name) + '</h2></div>') +
+            (cfg.show_image === false ? "" : '<div style="' + fieldStyle("image") + '">' + image + '</div>') +
+            (cfg.show_level === false ? "" : '<div style="' + fieldStyle("status") + '"><p class="original-level" style="font-size:24px;color:' +
+              color + ';' + html(valueStyle) + '">' + (level === null ? "—" : level + "%") + '</p></div>') +
+            (cfg.show_status === false || !item.charging_entity ? "" : '<div class="original-charge charge-status">' + html(chargeStatus) + '</div>') +
+            issue + '</div>';
+        }
         const fields = {
           name: '<span class="device-name" style="' + html(nameStyle) + '">' + html(name) + '</span>',
-          image: '<span style="' + html(imageStyle) + '">' + iconOf(level, charging, cfg) + '</span>',
+          image,
           level: '<span class="device-level" style="color:' + colorOf(level, cfg) + ";" +
             html(valueStyle) + '">' + (level === null ? "—" : level + "%") + '</span>',
           status: '<span class="charge-status">' + html(chargeStatus) + '</span>'
@@ -181,7 +347,6 @@
         }
         const slots = POSITIONS.map((slot) =>
           '<div class="slot ' + slot + '">' + (parts[slot] || []).join("") + '</div>').join("");
-        const issue = !entity ? '<div class="missing">Nicht verfügbar: ' + html(item.entity) + '</div>' : "";
         return '<div class="battery-device">' + '<div class="slots">' + slots + '</div>' + issue + '</div>';
       }).join("");
       this.shadowRoot.innerHTML =
@@ -194,7 +359,7 @@
         'background:var(--battery-card-device-background,transparent);padding:12px;box-sizing:border-box}' +
         '.slots{display:grid;grid-template-areas:"top-left top-center top-right" ' +
         '"middle-left middle-center middle-right" "bottom-left bottom-center bottom-right";' +
-        'grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-rows:auto auto auto;' +
+        'grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto auto auto;' +
         'align-items:center;row-gap:' + gap + ';column-gap:6px;min-height:60px}' +
         '.slot{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}' +
         '.slot.top-left,.slot.middle-left,.slot.bottom-left{align-items:flex-start;text-align:left}' +
@@ -205,7 +370,8 @@
         '.device-name{font-size:16px;font-weight:600;overflow-wrap:anywhere}.device-level{font-size:22px;font-weight:600}' +
         '.charge-status{font-size:12px;color:var(--secondary-text-color);white-space:nowrap}' +
         '.battery-visual{display:flex;align-items:center;justify-content:center;gap:10px}' +
-        '.original-battery-img{display:block;width:' + imageSize + 'px;max-width:100%;height:auto;object-fit:contain}' +
+        '.original-battery-img{--bc-image-width:' + imageSize + 'px}' +
+        '.slots .original-battery-img{display:block;max-width:100%}' +
         '.battery-outline{width:64px;height:27px;position:relative;border:2px solid var(--primary-text-color);' +
         'border-radius:5px;padding:3px;box-sizing:border-box;display:flex;align-items:stretch}' +
         '.battery-outline:after{content:"";position:absolute;right:-6px;top:8px;width:4px;height:8px;' +
@@ -214,9 +380,20 @@
         '.bolt{position:absolute;inset:0;text-align:center;font-size:21px;line-height:22px;color:var(--primary-text-color)}' +
         '.missing{font-size:12px;color:var(--error-color,#e53935);text-align:center;margin-top:8px}' +
         '@media(max-width:380px){.battery-list{grid-template-columns:1fr}}' +
-        '</style><ha-card style="' + html(cardStyle) + '"><div class="battery-list">' +
+        (!custom ?
+          '.original-card{display:flex;align-items:center;justify-content:center}' +
+          '.original-list{padding:0;min-width:0;width:100%;column-gap:' + columnGap + ';row-gap:' + gap + '}' +
+          '.original-list.single{display:contents}' +
+          '.original-list .original-layout{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto auto;' +
+          'padding:8px;align-items:center;justify-items:center;min-height:0;min-width:auto;border-radius:0;' +
+          'row-gap:' + gap + ';column-gap:' + columnGap + '}' +
+          '.original-charge,.original-layout>.missing{grid-column:1 / 4}' : "") +
+        '</style><ha-card class="' + (custom ? "" : "original-card") + '" style="' + html(cardStyle) +
+        (!custom ? ';height:100%;display:flex;align-items:center;justify-content:center' : "") +
+        '"><div class="battery-list ' + (custom ? "" : 'original-list' + (items.length <= 1 ? ' single' : '')) + '">' +
         (items.length ? rendered : '<div class="missing">Im Editor eine Batterie hinzufügen.</div>') +
         '</div></ha-card>';
+      this._sizeImages();
     }
   }
 
@@ -249,7 +426,8 @@
       this._emit();
     }
     _positions() {
-      return { ...(PRESETS[this._config.layout] || DEFAULT_POSITIONS), ...(this._config.positions || {}) };
+      return { ...(PRESETS[this._config.layout] || DEFAULT_POSITIONS),
+        ...(this._config.layout === "custom" ? this._config.positions || {} : {}) };
     }
     _render() {
       if (!this._config) return;
@@ -314,8 +492,9 @@
           String(cfg.columns || 2)) +
         select("Layout", "layout", layouts, cfg.layout || "default") +
         select("Batterieanzeige", "battery_style", styles, cfg.battery_style || "original") +
-        '<label>Originalgrafik-Breite (Pixel)<input type="number" min="24" max="180" data-key="image_size" value="' +
-        html(cfg.image_size || 85) + '"></label>' +
+        '<label>Bildbreite (Pixel, optional)<input type="number" min="1" max="260" data-key="image_size" ' +
+        'placeholder="Automatisch wie Original" value="' + html(cfg.image_size ?? "") + '"></label>' +
+        '<p>Ohne Pixelwert gilt die ursprüngliche Größenberechnung. styles.image.size wird weiterhin als Prozentfaktor angewendet.</p>' +
         '</div></div>' +
         '<div><h3>Elemente anzeigen</h3><div class="checks">' +
         checkbox("Name", "show_name") + checkbox("Batteriesymbol", "show_image") +
@@ -347,10 +526,17 @@
       this.shadowRoot.querySelectorAll("[data-key]").forEach((el) =>
         el.addEventListener("change", () => {
           const key = el.dataset.key;
+          if (key === "image_size" && el.value === "") {
+            const { image_size, ...rest } = this._config;
+            this._config = rest;
+            this._emit();
+            return;
+          }
           const value = el.type === "checkbox" ? el.checked :
+            key === "image_size" ? clamp(el.value, 1, 260) :
             el.type === "number" ? clamp(el.value, 0, 100) :
             key === "columns" ? clamp(el.value, 1, 4) :
-            key === "image_size" ? clamp(el.value, 24, 180) : el.value;
+            el.value;
           if (key.startsWith("position:")) {
             this._config = { ...this._config, layout: "custom",
               positions: { ...this._positions(), [key.slice(9)]: value } };
