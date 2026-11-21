@@ -51,7 +51,7 @@ Die Entwicklungsversion ist noch nicht als HACS-Update freigegeben.
 
 ## Kompatibilität
 
-Die bisherigen Schlüsselfelder entity, name und layout sind weiterhin lesbar. **Alle sieben originalen Base64-PNG-Batteriegrafiken wurden unverändert übernommen und sind die Standardanzeige** (battery_style: original). Die originalen Schwellen für die Bildauswahl bleiben ebenfalls erhalten. Die Grafikbreite lässt sich optional mit image_size (Pixel) festlegen. Bisherige styles.image-Objekte werden weiterhin ausgewertet; der alte size-Prozentwert bleibt als Skalierungsfaktor erhalten. Da die Layout-Engine neu ist, können Abstände und Positionen gegenüber der bisherigen Karte abweichen. CSS-Balken und MDI-Icons sind nur optionale Alternativen.
+Die bisherigen Schlüsselfelder entity, name und layout sind weiterhin lesbar. **Alle sieben originalen Base64-PNG-Batteriegrafiken wurden unverändert übernommen und sind die Standardanzeige** (battery_style: original). Die originalen Schwellen für die Bildauswahl bleiben ebenfalls erhalten. Die Grafikbreite lässt sich optional mit image_size (Pixel) festlegen. Bisherige styles.image-Objekte werden weiterhin ausgewertet; der alte size-Prozentwert bleibt als Skalierungsfaktor erhalten. Die sieben Standardlayouts behalten ihre ursprünglichen Flächen, Ausrichtungen und Abstände; freie Positionen sind zusätzlich über layout: custom verfügbar. CSS-Balken und MDI-Icons sind nur optionale Alternativen.
 
 ## Noch zu prüfen
 
@@ -76,3 +76,5 @@ Die freie Positionierung bleibt als zusätzliches Layout custom verfügbar. Die 
 Die innere Gerätefläche bleibt transparent und kann über --battery-card-device-background angepasst werden. Der Kartenhintergrund übernimmt weiterhin das Theme bzw. styles.card.
 
 Validiert: Vergleich aller sieben Layoutregeln und der Originalfarben mit dem ursprünglichen Code; Prozentgrößen über fünf Breiten; Styles und PNG-Grafiken. Anschließend Prüfung der echten Home-Assistant-Karten und der schmalen Handy-Karten.
+
+Der automatisierte Originalvergleich lässt sich im Repository mit `node tests/battery-card-compat.cjs` ausführen.
